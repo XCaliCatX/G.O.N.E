@@ -69,15 +69,25 @@ class GameOfNim(Game):
             return 1
         else:
             return 0
-    
+
 
 if __name__ == "__main__":
+    YELLOW = (255, 255, 0)
+    CYAN = (0, 255, 255)
+    MAGENTA = (255, 0, 255)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    BLACK = (0, 0, 0)
+    GRAY = (127, 127, 127)
+    WHITE = (255, 255, 255)
 
-
+    print(pygame.font.get_fonts())
     nim = GameOfNim(board=[0, 5, 3, 1])  # Creating the game instance
    # nim = GameOfNim(board=[0,5,3,1,4,6,7,8])
     #nim = GameOfNim(board=[7, 5, 3, 1]) # a much larger tree to search
     print(nim.initial.board) # must be [0, 5, 3, 1]
+    board= nim.initial.board
     print(nim.initial.moves) # must be [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2,1), (2, 2), (2, 3), (3, 1)]
     print(nim.result(nim.initial, (1,3) ))
     utility = nim.play_game(alpha_beta_player, query_player) # computer moves first
@@ -93,7 +103,8 @@ if __name__ == "__main__":
     pygame.display.set_icon(icon)
     done = False
     clock = pygame.time.Clock()
-
+    titleFont = pygame.font.Font(None, 32)
+    text = titleFont.render("Game of Nim Extension", True, BLACK)
     while not done:
 
         clock.tick(10)
@@ -102,4 +113,7 @@ if __name__ == "__main__":
            if event.type == pygame.QUIT:
               done=True
 
-        screen.fill((0,0,0))
+
+        screen.fill(WHITE)
+        screen.blit(text, (290,15))
+        pygame.display.flip()
