@@ -104,7 +104,7 @@ if __name__ == "__main__":
     done = False
     clock = pygame.time.Clock()
     titleFont = pygame.font.Font(None, 32)
-    text = titleFont.render("Game of Nim Extension", True, BLACK)
+    titleText = titleFont.render("Game of Nim Extension", True, BLACK)
     while not done:
 
         clock.tick(10)
@@ -115,5 +115,5 @@ if __name__ == "__main__":
 
 
         screen.fill(WHITE)
-        screen.blit(text, (290,15))
+        screen.blit(titleText, (290,15))
         pygame.display.flip()
