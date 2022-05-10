@@ -1,23 +1,35 @@
 import sys, pygame
 from games import *
-import game_of_nim 
+import game_of_nim
 
 pygame.init()
 size = width, height = 1024, 768
 screen = pygame.display.set_mode(size)
 mainClock = pygame.time.Clock()
- 
+
+
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
     surface.blit(textobj, textrect)
 
+
 font = pygame.font.SysFont(None, 60)
 COLOR_ACTIVE = pygame.Color('lightskyblue3')
 COLOR_INACTIVE = pygame.Color('dodgerblue2')
 black = (0, 0, 0)
 white = (255, 255, 255)
+YELLOW = (255, 255, 0)
+CYAN = (0, 255, 255)
+MAGENTA = (255, 0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+BLACK = (0, 0, 0)
+GRAY = (127, 127, 127)
+WHITE = (255, 255, 255)
+
 
 def main_menu():
     user_text = ''
@@ -25,7 +37,12 @@ def main_menu():
     color = COLOR_INACTIVE
     rect_width = 200
     rect_height = 50
-    text_box = pygame.Rect(0, 50, rect_width, rect_height)
+    text_box = pygame.Rect(425, 250, rect_width, rect_height)
+    titleFont = pygame.font.Font(None, 32)
+    titleText = titleFont.render("Game of Nim Extension", True, BLACK)
+    pygame.display.set_caption("G.O.N.E")
+    icon = pygame.image.load("space.png")
+    pygame.display.set_icon(icon)
 
     while True:
         for event in pygame.event.get():
@@ -44,12 +61,12 @@ def main_menu():
                         active = not active
                     else:
                         active = False
-                
+
             if event.type == pygame.KEYDOWN:
                 if active:
                     if event.key == pygame.K_RETURN:
-                        if(user_text.isdigit()):
-                            print(user_text) 
+                        if (user_text.isdigit()):
+                            print(user_text)
                             game(int(user_text))
                         # else:
                         #     draw_text('input a number amount', font, white, screen, 20, 20)
@@ -57,18 +74,22 @@ def main_menu():
                         user_text = user_text[:-1]
                     else:
                         user_text += event.unicode
-        screen.fill(black)
+        screen.fill(WHITE)
+        screen.blit(titleText, (400, 15))
         pygame.draw.rect(screen, color, text_box)
         color = COLOR_ACTIVE if active else COLOR_INACTIVE
-        text_surface = font.render(user_text, True, white)
-        screen.blit(text_surface, (text_box.x+5, text_box.y+5))
-        text_box.w = max(100, text_surface.get_width()+10)
-        draw_text('input depth amount (integer):', font, white, screen,0, 0)
+        text_surface = font.render(user_text, True, BLACK)
+        screen.blit(text_surface, (text_box.x + 5, text_box.y + 5))
+        text_box.w = max(100, text_surface.get_width() + 10)
+        draw_text('input depth amount (integer):', font, BLACK, screen, 200, 200)
 
         pygame.display.flip()
         mainClock.tick(60)
-        
+
+
 click = False
+
+
 def game(amt):
     gom = game_of_nim(amt)
     screen = pygame.display.set_mode(size)
@@ -76,15 +97,15 @@ def game(amt):
     stickrect = stick.get_rect()
     rect_width = 50
     rect_height = 200
-    stickrect2 = pygame.Rect((width/2) - (rect_width/2), (height/2) - (rect_height/2), rect_width, rect_height)
-    #stickrect2
+    stickrect2 = pygame.Rect((width / 2) - (rect_width / 2), (height / 2) - (rect_height / 2), rect_width, rect_height)
+    # stickrect2
     # pos = 0
     x = 0
     y = 0
 
     while 1:
-        #mx, my = pygame.mouse.get_pos()
-        
+        # mx, my = pygame.mouse.get_pos()
+
         pygame.draw.rect(screen, (255, 0, 0), stickrect)
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
@@ -93,8 +114,8 @@ def game(amt):
                 print(mx, my)
                 if stickrect.collidepoint((mx, my)):
                     print('y')
-                    #screen.blit(stickrect, (0,0,0))
-                    stick.fill((0,0,0,0))
+                    # screen.blit(stickrect, (0,0,0))
+                    stick.fill((0, 0, 0, 0))
                     # if click:
                     #     print('yes')
 
@@ -108,6 +129,7 @@ def game(amt):
         screen.blit(stick, stickrect)
         pygame.display.flip()
         mainClock.tick(60)
+
 
 if __name__ == "__main__":
     main_menu()
