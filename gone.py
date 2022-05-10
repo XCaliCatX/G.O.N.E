@@ -37,8 +37,8 @@ def main_menu():
     color = COLOR_INACTIVE
     rect_width = 200
     rect_height = 50
-    text_box = pygame.Rect(425, 250, rect_width, rect_height)
-    titleFont = pygame.font.Font(None, 32)
+    text_box = pygame.Rect(450, 250, rect_width, rect_height)
+    titleFont = pygame.font.SysFont("rockwell", 32)
     titleText = titleFont.render("Game of Nim Extension", True, BLACK)
     pygame.display.set_caption("G.O.N.E")
     icon = pygame.image.load("space.png")
@@ -75,13 +75,13 @@ def main_menu():
                     else:
                         user_text += event.unicode
         screen.fill(WHITE)
-        screen.blit(titleText, (400, 15))
+        screen.blit(titleText, (340, 15))
         pygame.draw.rect(screen, color, text_box)
         color = COLOR_ACTIVE if active else COLOR_INACTIVE
         text_surface = font.render(user_text, True, BLACK)
         screen.blit(text_surface, (text_box.x + 5, text_box.y + 5))
         text_box.w = max(100, text_surface.get_width() + 10)
-        draw_text('input depth amount (integer):', font, BLACK, screen, 200, 200)
+        draw_text('input depth amount (integer):', titleFont, BLACK, screen, 300, 200)
 
         pygame.display.flip()
         mainClock.tick(60)
