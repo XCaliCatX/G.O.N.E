@@ -65,7 +65,7 @@ def input_menu():
                 if active:
                     if event.key == pygame.K_RETURN:
                         if (user_text.isdigit()):
-                            print(user_text)
+                            print("user input: " + user_text)
                             game(int(user_text))
                         # else:
                         #     draw_text('input a number amount', font, white, screen, 20, 20)
@@ -91,25 +91,39 @@ click = False
 def game(amt):
     
     screen = pygame.display.set_mode(size)
+    stick_list = []
+    stickrect_list = []
+    b = []
+    
+    stick_y = 0 # space between the rows of sticks
+    user_range = 5 # change this to user's input
     stick = pygame.image.load('stick.png')
-    stickrect = stick.get_rect()
-    rect_width = 50
-    rect_height = 200
-    stickrect2 = pygame.Rect((width / 2) - (rect_width / 2), (height / 2) - (rect_height / 2), rect_width, rect_height)
+    for i in range(amt):
+        stick_x = 0 # space between the columns of sticks
+        rand_range = random.randrange(1, user_range)
+        b.append(rand_range) # for the GameOfNim function
+        for j in range(rand_range):
+            stick_list.append(stick)
+            stickrect = stick.get_rect()
+            stickrect.topleft = (stick_x, stick_y)
+            stick_x += 50
+            stickrect_list.append(stickrect)
+        stick_y += 50
+    print(stickrect_list)
+    # rect_width = 50
+    # rect_height = 200
+    # stickrect2 = pygame.Rect((width / 2) - (rect_width / 2), (height / 2) - (rect_height / 2), rect_width, rect_height)
     # stickrect2
     # pos = 0
-    x = 0
-    y = 0
-    b = []
-    for i in range(amt):
-        rand_range = random.randrange(1, 5)
-        b.append(rand_range)
+    # x = 0
+    # y = 0
+    
 
     gom = GameOfNim(board=b)
     while 1:
         # mx, my = pygame.mouse.get_pos()
-
-        pygame.draw.rect(screen, (255, 0, 0), stickrect)
+        for i in range(amt-1):
+            pygame.draw.rect(screen, (255, 0, 0), stickrect_list[i])
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
             if event.type == pygame.MOUSEBUTTONUP:
@@ -122,14 +136,16 @@ def game(amt):
                     # if click:
                     #     print('yes')
 
-        stickrect = stickrect.move(x, y)
+        # stickrect = stickrect.move(x, y)
         # if stickrect.left < 0 or stickrect.right > width:
         #     speed[0] = -speed[0]
         # if stickrect.top < 0 or stickrect.bottom > height:
         #     speed[1] = -speed[1]
 
         screen.fill(black)
-        screen.blit(stick, stickrect)
+        for i in range(amt):
+            for j in range(len(stickrect_list)):
+                screen.blit(stick_list[j], stickrect_list[j])
         pygame.display.flip()
         mainClock.tick(60)
 
