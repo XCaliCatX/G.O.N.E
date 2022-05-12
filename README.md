@@ -1,7 +1,7 @@
 # G.O.N.E
 ## Created by:
  * Kim Eaton 
- * Christopher Mcdonnell
+ * Christopher McDonnell
  * Austin Sohn
 
 ## Description
