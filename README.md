@@ -2,7 +2,7 @@
 G.O.N.E.
 Game of Nim Extentsion
 
-Created for Cpsc 481 at CSUF
+Final Project Created for CPSC 481 at CSUF
 
 Icon image by: <a href="https://www.flaticon.com/free-icons/dinosaur" title="dinosaur icons">Dinosaur icons created by Freepik - Flaticon</a> 
 
