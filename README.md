@@ -18,7 +18,7 @@ Extension of <a href = "https://github.com/aimacode/aima-python" title = "Aimaco
   * We are using Python 3.9.6
 * Install Pygames
   * Open a terminal and use this command: ```python3 -m pip install -U pygame --user```
-* Download or clone these files into a folder
+* Download or clone these files into a folder, along with accompanying aima-code.
 * Open the folder in terminal
 * Run the code
   * Open a terminal and change directories to the folder with the code in it
