@@ -1,6 +1,7 @@
-import sys, pygame
+import sys, pygame, random
 from games import *
-import game_of_nim
+from main import GameOfNim
+
 
 pygame.init()
 size = width, height = 1024, 768
@@ -26,12 +27,10 @@ MAGENTA = (255, 0, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
-BLACK = (0, 0, 0)
 GRAY = (127, 127, 127)
-WHITE = (255, 255, 255)
 
 
-def main_menu():
+def input_menu():
     user_text = ''
     active = False
     color = COLOR_INACTIVE
@@ -39,7 +38,7 @@ def main_menu():
     rect_height = 50
     text_box = pygame.Rect(450, 250, rect_width, rect_height)
     titleFont = pygame.font.SysFont("rockwell", 32)
-    titleText = titleFont.render("Game of Nim Extension", True, BLACK)
+    titleText = titleFont.render("Game of Nim Extension", True, white)
     pygame.display.set_caption("G.O.N.E")
     icon = pygame.image.load("space.png")
     pygame.display.set_icon(icon)
@@ -74,24 +73,23 @@ def main_menu():
                         user_text = user_text[:-1]
                     else:
                         user_text += event.unicode
-        screen.fill(WHITE)
+        screen.fill(black)
         screen.blit(titleText, (340, 15))
         pygame.draw.rect(screen, color, text_box)
         color = COLOR_ACTIVE if active else COLOR_INACTIVE
-        text_surface = font.render(user_text, True, BLACK)
+        text_surface = font.render(user_text, True, white)
         screen.blit(text_surface, (text_box.x + 5, text_box.y + 5))
         text_box.w = max(100, text_surface.get_width() + 10)
-        draw_text('input depth amount (integer):', titleFont, BLACK, screen, 300, 200)
+        draw_text('input depth amount (integer):', titleFont, white, screen, 300, 200)
 
         pygame.display.flip()
         mainClock.tick(60)
-
 
 click = False
 
 
 def game(amt):
-    gom = game_of_nim(amt)
+    
     screen = pygame.display.set_mode(size)
     stick = pygame.image.load('stick.png')
     stickrect = stick.get_rect()
@@ -102,7 +100,12 @@ def game(amt):
     # pos = 0
     x = 0
     y = 0
+    b = []
+    for i in range(amt):
+        rand_range = random.randrange(1, 5)
+        b.append(rand_range)
 
+    gom = GameOfNim(board=b)
     while 1:
         # mx, my = pygame.mouse.get_pos()
 
@@ -132,4 +135,6 @@ def game(amt):
 
 
 if __name__ == "__main__":
-    main_menu()
+    # replace input_menu() with main_menu() when it's finished
+    # and main menu will call input_menu()
+    input_menu()
