@@ -19,7 +19,7 @@ Extension of <a href = "https://github.com/aimacode/aima-python" title = "Aimaco
 * Install Pygames
   * Open a terminal and use this command: ```python3 -m pip install -U pygame --user```
 * Download or clone these files into a folder
-* Click the Aimacode Github link above and download "games.py" and "utils.py"
+* Click the Aimacode Github link above and download "games.py" and "utils.py" and put it in the folder with our code
 * Open the folder in terminal
 * Run the code
   * Open a terminal and change directories to the folder with the code in it
