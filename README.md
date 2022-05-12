@@ -1,5 +1,8 @@
 # G.O.N.E
-G.O.N.E.
+## Created by:
+ Kim Eaton
+ Christopher Mcdonnell 
+ Austin Sohn
 
 ## Description
 Game of Nim Extentsion
