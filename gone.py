@@ -42,13 +42,13 @@ def main_menu():
     MENU_RECT = MENU_TEXT.get_rect(center=(520, 100))
     screen.blit(MENU_TEXT, MENU_RECT)
 
-    input_one_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((420, 170), (200, 25)), text="# Rows",
+    input_one_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((420, 170), (200, 25)), text="# Rows (max of 10)",
                                                   manager=manager)
     input_one = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((420, 190), (200, 50)), manager=manager)
     input_one.set_allowed_characters(allowed_characters="numbers")
     # input_one.set_text_length_limit(limit=1)
 
-    input_two_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((420, 245), (200, 25)), text="Max # Sticks",
+    input_two_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((420, 245), (200, 25)), text="Max # Sticks (max of 20)",
                                                   manager=manager)
     input_two = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((420, 265), (200, 50)), manager=manager)
     input_two.set_allowed_characters(allowed_characters="numbers")
@@ -71,6 +71,10 @@ def main_menu():
                     num_rows = input_one.get_text()
                     max_sticks = input_two.get_text()
                     print('Starting game with ' + num_rows + ' rows & ' + max_sticks + ' max sticks')
+                    if int(num_rows) > 10:
+                        num_rows  = 10
+                    if int(max_sticks) > 20:
+                        max_sticks  = 20
                     game(int(num_rows), int(max_sticks))
                 if event.ui_element == how_to_button:
                     print('How to play')
@@ -131,11 +135,95 @@ def game(amt, user_max):
     screen = pygame.display.set_mode(size)
     stick_list = []
     stickrect_list = []
+    number_list=[]
+    numberrect_list = []
     b = []
-    stick_y = 0  # space between the rows of sticks
+    stick_y = 60  # space between the rows of sticks
+    numbery = 60
     stick = pygame.image.load('fern.png')
+    number0 = pygame.image.load('letter-o.png')
+    number1 = pygame.image.load('number-1.png')
+    number2 = pygame.image.load('number-2.png')
+    number3 = pygame.image.load('number-3.png')
+    number4 = pygame.image.load('number-four.png')
+    number5 = pygame.image.load('number-5.png')
+    number6 = pygame.image.load('six.png')
+    number7 = pygame.image.load('seven.png')
+    number8 = pygame.image.load('number-8.png')
+    number9 = pygame.image.load('number-9.png')
+    arrow = pygame.image.load('right-arrow.png')
+
+    for i in range(amt+1):
+        numberx =10
+        if i == 0:
+            number_list.append(number0)
+            numberrect = number0.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 1:
+            number_list.append(number1)
+            numberrect = number1.get_rect()
+            numberrect.topleft = (numberx,numbery)
+            numberrect_list.append(numberrect)
+            numbery+= 50
+        if i == 2:
+            number_list.append(number2)
+            numberrect = number2.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 3:
+            number_list.append(number3)
+            numberrect = number3.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 4:
+            number_list.append(number4)
+            numberrect = number4.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 5:
+            number_list.append(number5)
+            numberrect = number5.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 6:
+            number_list.append(number6)
+            numberrect = number6.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 7:
+            number_list.append(number7)
+            numberrect = number7.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 8:
+            number_list.append(number8)
+            numberrect = number8.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 9:
+            number_list.append(number9)
+            numberrect = number9.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i > 10:
+            number_list.append(arrow)
+            numberrect = arrow.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+
     for i in range(amt):
-        stick_x = 0  # space between the columns of sticks
+        stick_x = 60 # space between the columns of sticks
         rand_range = random.randrange(1, user_max)
         b.append(rand_range)  # for the GameOfNim function
         for j in range(rand_range):
@@ -174,6 +262,9 @@ def game(amt, user_max):
         for i in range(amt):
             for j in range(len(stickrect_list)):
                 screen.blit(stick_list[j], stickrect_list[j])
+        for i in range(amt):
+            for j in range(len(numberrect_list)):
+                screen.blit(number_list[j], numberrect_list[j])
 
 
         pygame.display.flip()
