@@ -135,12 +135,16 @@ def game(amt, user_max):
     screen = pygame.display.set_mode(size)
     stick_list = []
     stickrect_list = []
+    #number placement holders
     number_list=[]
     numberrect_list = []
+    #board
     b = []
     stick_y = 60  # space between the rows of sticks
     numbery = 60
     stick = pygame.image.load('fern.png')
+    
+    #images for numbers
     number0 = pygame.image.load('letter-o.png')
     number1 = pygame.image.load('number-1.png')
     number2 = pygame.image.load('number-2.png')
@@ -153,6 +157,7 @@ def game(amt, user_max):
     number9 = pygame.image.load('number-9.png')
     arrow = pygame.image.load('right-arrow.png')
 
+    #create list of numbers and placement
     for i in range(amt+1):
         numberx =10
         if i == 0:
@@ -262,6 +267,7 @@ def game(amt, user_max):
         for i in range(amt):
             for j in range(len(stickrect_list)):
                 screen.blit(stick_list[j], stickrect_list[j])
+        #display numbers on screen beside sticks
         for i in range(amt):
             for j in range(len(numberrect_list)):
                 screen.blit(number_list[j], numberrect_list[j])
