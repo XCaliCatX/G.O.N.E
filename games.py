@@ -176,80 +176,83 @@ def alpha_beta_cutoff_search(state, game, d=4, cutoff_test=None, eval_fn=None):
 # Players for Games
 
 
+# This definition was modified for G.O.N.E. - in order to update the GUI as the game is played
 def query_player(game, state):
-    """Make a move by querying standard input."""
-    print("current state:")
+    # Initialize
     game.display(state)
     print("available moves: {}".format(game.actions(state)))
-    print("")
     move = None
 
+    # Start the clock
     CLOCK = game.pygame.time.Clock()
+
+    # Fill screen
     game.screen.fill("black")
+    # Input one
+    input_one_label = pygame_gui.elements.UILabel(relative_rect=game.pygame.Rect((200, 680), (200, 25)), text="Row #", manager=game.manager)
     input_one = pygame_gui.elements.UITextEntryLine(relative_rect=game.pygame.Rect((200, 700), (200, 50)), manager=game.manager)
     input_one.set_allowed_characters(allowed_characters="numbers")
-    input_one.rebuild()
+    # Input two
+    input_two_label = pygame_gui.elements.UILabel(relative_rect=game.pygame.Rect((420, 680), (200, 25)), text="Sticks to remove", manager=game.manager)
     input_two = pygame_gui.elements.UITextEntryLine(relative_rect=game.pygame.Rect((420, 700), (200, 50)), manager=game.manager)
     input_two.set_allowed_characters(allowed_characters="numbers")
     move_button = pygame_gui.elements.UIButton(relative_rect=game.pygame.Rect((640, 700), (200, 50)), text='Make Move', manager=game.manager)
-    print('BOARD:')
-    print(game.board)
+
+    # Starting y position for game images
     y = 25
+
+    # Create "stick" variables to be used in game rows
     stick = game.pygame.image.load('assets/fern.png')
     stick = game.pygame.transform.scale(stick, (40, 40))
-    for i in range(len(game.board)):
+
+    # Loop through our board, creating number and stick images for rows
+    for i in range(len(state.board)):
         x = 25
         number = game.pygame.image.load('assets/'+str(i)+'.png')
         number = game.pygame.transform.scale(number, (40, 40))
         game.screen.blit(number, (x, y))
-        for j in range(game.board[i]):
+        for j in range(state.board[i]):
             x = x + 50
             game.screen.blit(stick, (x, y))
-            print(j)
+            # print(j)
         y = y + 50
 
+    # Execute this loop until the game is either closed or redirected elsewhere
     while True:
         time_delta = CLOCK.tick(60) / 1000.0
         for event in game.pygame.event.get():
             if event.type == game.pygame.QUIT:
-                print("quitttingz")
                 quit()
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == move_button:
-                    print("moving")
                     move_row = input_one.get_text()
                     move_sticks = input_two.get_text()
-                    move_string = str(move_row) + ', ' + str(move_sticks)
-                    print(move_string)
-                    # if game.actions(state):
-                    #     move_string = input('Your move? ')
-                    #     try:
-                    #         move = eval(move_string)
-                    #     except NameError:
-                    #         move = move_string
-                    # else:
-                    #     print('no legal moves: passing turn to next player')
-                    # return move
+                    move_string = '(' + str(move_row) + ', ' + str(move_sticks) +')'
+                    if move_row == "" or move_sticks == "":
+                        break
+                    if game.actions(state):
+                        try:
+                            move = eval(move_string)
+                        except NameError:
+                            move = move_string
+
+                    if (int(move_row), int(move_sticks)) in game.actions(state):
+                        input_one.hide()
+                        input_one_label.hide()
+                        input_two.hide()
+                        input_two_label.hide()
+                        move_button.hide()
+                        return move
+                    else:
+                        input_one.set_text("")
+                        input_two.set_text("")
             
             game.manager.process_events(event)
-            # print("in loop")
 
+        # Update screen
         game.manager.update(time_delta)
         game.manager.draw_ui(game.screen)
         game.pygame.display.update()
-
-    # game.manager.update(time_delta)
-    game.manager.draw_ui(game.screen)
-    game.pygame.display.update()
-    if game.actions(state):
-        move_string = input('Your move? ')
-        try:
-            move = eval(move_string)
-        except NameError:
-            move = move_string
-    else:
-        print('no legal moves: passing turn to next player')
-    return move
 
 
 def random_player(game, state):
@@ -259,7 +262,6 @@ def random_player(game, state):
 
 def alpha_beta_player(game, state):
     return alpha_beta_cutoff_search(state, game, 4 , None, game.eval(state))
-
 
 
 def minmax_player(game,state):
