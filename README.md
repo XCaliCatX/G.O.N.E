@@ -9,8 +9,10 @@ Game of Nim Extentsion
 
 Final Project for CPSC 481 at CSUF
 
-Icon image by: <a href="https://www.flaticon.com/free-icons/dinosaur" title="dinosaur icons">Dinosaur icons created by Freepik - Flaticon</a> 
-fern: <a href="https://www.flaticon.com/free-icons/fern" title="fern icons">Fern icons created by smalllikeart - Flaticon</a>
+### Credits for images:
+* <a href="https://www.flaticon.com/free-icons/dinosaur" title="dinosaur icons">Dinosaur Icon </a> 
+* <a href="https://www.flaticon.com/free-icons/fern" title="Fern icons">Fern Icon</a> 
+* <a href = "https://www.flaticon.com/packs/alphabet-and-number" title = "Number Icons" > Number Icons</a>
 
 Extension of <a href = "https://github.com/aimacode/aima-python" title = "Aimacode-Python"> Aimacode-Python </a>
 
