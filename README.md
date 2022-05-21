@@ -23,7 +23,8 @@ Extension of <a href = "https://github.com/aimacode/aima-python" title = "Aimaco
 * Install Pygame GUI
   * pip install pygame_gui -U
 * Download or clone these files into a folder
-* Click the Aimacode Github link above and download "games.py" and "utils.py" and put it in the folder with our code
+* Click the Aimacode Github link above and download "utils.py" and put it in the folder with our code
+  * The games.py we are using is a modified version of Aimacode's games.py.
 * Open the folder in terminal
 * Run the code
   * Open a terminal and change directories to the folder with the code in it
