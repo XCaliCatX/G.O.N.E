@@ -1,10 +1,10 @@
 import sys, pygame, random, pygame_gui
 from games import *
-from main import GameOfNim
+from game_of_nim import GameOfNim
 
 pygame.init()
 size = width, height = 1024, 768
-screen = pygame.display.set_mode(size)
+SCREEN = pygame.display.set_mode(size)
 mainClock = pygame.time.Clock()
 
 
@@ -18,7 +18,7 @@ def draw_text(text, font, color, surface, x, y):
 font = pygame.font.SysFont(None, 60)
 COLOR_ACTIVE = pygame.Color('lightskyblue3')
 COLOR_INACTIVE = pygame.Color('dodgerblue2')
-pygame_icon = pygame.image.load('space.png')
+pygame_icon = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/space.png')
 pygame.display.set_icon(pygame_icon)
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -32,15 +32,17 @@ GRAY = (127, 127, 127)
 
 manager = pygame_gui.UIManager(size)
 
+def get_font(size):
+    return pygame.font.Font("assets/font.ttf", size)
 
 def main_menu():
     CLOCK = pygame.time.Clock()
 
-    screen.fill("black")
+    SCREEN.fill("black")
 
-    MENU_TEXT = font.render("Game of Nim Extension", True, "#b68f40")
+    MENU_TEXT = get_font(30).render("Game of Nim Extension", True, "#b68f40")
     MENU_RECT = MENU_TEXT.get_rect(center=(520, 100))
-    screen.blit(MENU_TEXT, MENU_RECT)
+    SCREEN.blit(MENU_TEXT, MENU_RECT)
 
     input_one_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((420, 170), (200, 25)), text="# Rows (max of 10)",
                                                   manager=manager)
@@ -75,11 +77,20 @@ def main_menu():
                         num_rows  = 10
                     if int(max_sticks) > 20:
                         max_sticks  = 20
-                    game(int(num_rows), int(max_sticks))
+                    input_one.hide()
+                    input_one_label.hide()
+                    input_two.hide()
+                    input_two_label.hide()
+                    start_button.hide()
+                    how_to_button.hide()
+                    exit_button.hide()
+                    game_new_two(int(num_rows), int(max_sticks))
                 if event.ui_element == how_to_button:
                     print('How to play')
                     input_one.hide()
+                    input_one_label.hide()
                     input_two.hide()
+                    input_two_label.hide()
                     start_button.hide()
                     how_to_button.hide()
                     exit_button.hide()
@@ -90,8 +101,8 @@ def main_menu():
             manager.process_events(event)
 
         manager.update(time_delta)
-        # screen.blit(background, (0, 0))
-        manager.draw_ui(screen)
+        # SCREEN.blit(background, (0, 0))
+        manager.draw_ui(SCREEN)
 
         pygame.display.update()
 
@@ -99,13 +110,11 @@ def main_menu():
 def how_to_play():
     CLOCK = pygame.time.Clock()
 
-    screen.fill("black")
+    SCREEN.fill("black")
     rules_text = "Rules: The goal of the game to to not pick the last fern. You may pick any number of ferns from any given row, but only one row at a time."
 
-    rules = pygame_gui.elements.UITextBox(html_text=rules_text, relative_rect=pygame.Rect((175, 50), (700, 300)),
-                                          manager=manager)
-    back_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((420, 445), (200, 50)), text='BACK',
-                                               manager=manager)
+    rules = pygame_gui.elements.UITextBox(html_text=rules_text, relative_rect=pygame.Rect((175, 50), (700, 300)), manager=manager)
+    back_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((420, 445), (200, 50)), text='BACK', manager=manager)
 
     while True:
         time_delta = CLOCK.tick(60) / 1000.0
@@ -122,17 +131,134 @@ def how_to_play():
             manager.process_events(event)
 
         manager.update(time_delta)
-        # screen.blit(background, (0, 0))
-        manager.draw_ui(screen)
+        # SCREEN.blit(background, (0, 0))
+        manager.draw_ui(SCREEN)
 
         pygame.display.update()
 
 
 click = False
 
+def draw_sticks():
+    return
 
-def game(amt, user_max):
-    screen = pygame.display.set_mode(size)
+def game_new_two(amt, user_max):
+    CLOCK = pygame.time.Clock()
+
+    SCREEN.fill("black")
+
+    board = []
+    for i in range(amt):
+        board.append(random.randrange(1, user_max))
+    gom = GameOfNim(board=board, screen=SCREEN, pygame=pygame, manager=manager)
+    print(gom.result(gom.initial, (1,1) ))
+    utility = gom.play_game(alpha_beta_player, query_player)
+    if (utility < 0):
+        print("MIN won the game")
+    else:
+        print("MAX won the game")
+    exit
+    
+    # board = {}
+    # for i in range(amt):
+    #     board[i] = {}
+    #     for j in range(random.randrange(1, user_max)):
+    #         print(i)
+    #         print(j)
+    #         board[i][j] = True
+
+    #create list of numbers and placement
+    # for i in range(amt):
+    #     numberx =10
+    #     if i == 0:
+    #         number_list.append(number0)
+    #         numberrect = number0.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 1:
+    #         number_list.append(number1)
+    #         numberrect = number1.get_rect()
+    #         numberrect.topleft = (numberx,numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery+= 50
+    #     if i == 2:
+    #         number_list.append(number2)
+    #         numberrect = number2.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 3:
+    #         number_list.append(number3)
+    #         numberrect = number3.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 4:
+    #         number_list.append(number4)
+    #         numberrect = number4.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 5:
+    #         number_list.append(number5)
+    #         numberrect = number5.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 6:
+    #         number_list.append(number6)
+    #         numberrect = number6.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 7:
+    #         number_list.append(number7)
+    #         numberrect = number7.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 8:
+    #         number_list.append(number8)
+    #         numberrect = number8.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i == 9:
+    #         number_list.append(number9)
+    #         numberrect = number9.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+    #     if i > 10:
+    #         number_list.append(arrow)
+    #         numberrect = arrow.get_rect()
+    #         numberrect.topleft = (numberx, numbery)
+    #         numberrect_list.append(numberrect)
+    #         numbery += 50
+
+    # for i in range(amt):
+    #     stick_x = 60 # space between the columns of sticks
+    #     rand_range = random.randrange(1, user_max)
+    #     b.append(rand_range)  # for the GameOfNim function
+    #     for j in range(rand_range):
+    #         stick_list.append(stick)
+    #         stickrect = stick.get_rect()
+    #         stickrect.topleft = (stick_x, stick_y)
+    #         stick_x += 50
+    #         stickrect_list.append(stickrect)
+    #     stick_y += 50
+
+def game_new(amt, user_max):
+    CLOCK = pygame.time.Clock()
+
+    SCREEN.fill("black")
+    input_one = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((200, 700), (200, 50)), manager=manager)
+    input_one.set_allowed_characters(allowed_characters="numbers")
+    input_two = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((420, 700), (200, 50)), manager=manager)
+    input_two.set_allowed_characters(allowed_characters="numbers")
+    back_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((640, 700), (200, 50)), text='Make Move', manager=manager)
+
     stick_list = []
     stickrect_list = []
     #number placement holders
@@ -142,20 +268,161 @@ def game(amt, user_max):
     b = []
     stick_y = 60  # space between the rows of sticks
     numbery = 60
-    stick = pygame.image.load('fern.png')
+    stick = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/fern.png')
     
     #images for numbers
-    number0 = pygame.image.load('letter-o.png')
-    number1 = pygame.image.load('number-1.png')
-    number2 = pygame.image.load('number-2.png')
-    number3 = pygame.image.load('number-3.png')
-    number4 = pygame.image.load('number-four.png')
-    number5 = pygame.image.load('number-5.png')
-    number6 = pygame.image.load('six.png')
-    number7 = pygame.image.load('seven.png')
-    number8 = pygame.image.load('number-8.png')
-    number9 = pygame.image.load('number-9.png')
-    arrow = pygame.image.load('right-arrow.png')
+    number0 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/letter-o.png')
+    number1 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-1.png')
+    number2 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-2.png')
+    number3 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-3.png')
+    number4 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-four.png')
+    number5 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-5.png')
+    number6 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/six.png')
+    number7 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/seven.png')
+    number8 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-8.png')
+    number9 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-9.png')
+    arrow = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/right-arrow.png')
+
+    #create list of numbers and placement
+    for i in range(amt):
+        numberx =10
+        if i == 0:
+            number_list.append(number0)
+            numberrect = number0.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 1:
+            number_list.append(number1)
+            numberrect = number1.get_rect()
+            numberrect.topleft = (numberx,numbery)
+            numberrect_list.append(numberrect)
+            numbery+= 50
+        if i == 2:
+            number_list.append(number2)
+            numberrect = number2.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 3:
+            number_list.append(number3)
+            numberrect = number3.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 4:
+            number_list.append(number4)
+            numberrect = number4.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 5:
+            number_list.append(number5)
+            numberrect = number5.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 6:
+            number_list.append(number6)
+            numberrect = number6.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 7:
+            number_list.append(number7)
+            numberrect = number7.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 8:
+            number_list.append(number8)
+            numberrect = number8.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i == 9:
+            number_list.append(number9)
+            numberrect = number9.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+        if i > 10:
+            number_list.append(arrow)
+            numberrect = arrow.get_rect()
+            numberrect.topleft = (numberx, numbery)
+            numberrect_list.append(numberrect)
+            numbery += 50
+
+    for i in range(amt):
+        stick_x = 60 # space between the columns of sticks
+        rand_range = random.randrange(1, user_max)
+        b.append(rand_range)  # for the GameOfNim function
+        for j in range(rand_range):
+            stick_list.append(stick)
+            stickrect = stick.get_rect()
+            stickrect.topleft = (stick_x, stick_y)
+            stick_x += 50
+            stickrect_list.append(stickrect)
+        stick_y += 50
+
+    while True:
+        time_delta = CLOCK.tick(60) / 1000.0
+        SCREEN.fill("black")
+        for i in range(amt):
+            for j in range(len(stickrect_list)):
+                SCREEN.blit(stick_list[j], stickrect_list[j])
+
+        #display numbers on SCREEN beside sticks
+        for i in range(amt):
+            for j in range(len(numberrect_list)):
+                SCREEN.blit(number_list[j], numberrect_list[j])
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == back_button:
+                    row_num = input_one.get_text()
+                    stick_num = input_two.get_text()
+                    print('Removing ' + stick_num + ' stick(s) from row ' + row_num)
+                    del stickrect_list[-1]
+                    print(stick_list)
+                
+
+            manager.process_events(event)
+
+        manager.update(time_delta)
+        # SCREEN.blit(background, (0, 0))
+        manager.draw_ui(SCREEN)
+
+        pygame.display.update()
+
+
+def game(amt, user_max):
+    SCREEN = pygame.display.set_mode(size)
+    stick_list = []
+    stickrect_list = []
+    #number placement holders
+    number_list=[]
+    numberrect_list = []
+    #board
+    b = []
+    stick_y = 60  # space between the rows of sticks
+    numbery = 60
+    stick = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/fern.png')
+    
+    #images for numbers
+    number0 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/letter-o.png')
+    number1 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-1.png')
+    number2 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-2.png')
+    number3 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-3.png')
+    number4 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-four.png')
+    number5 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-5.png')
+    number6 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/six.png')
+    number7 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/seven.png')
+    number8 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-8.png')
+    number9 = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/number-9.png')
+    arrow = pygame.image.load('../../Downloads/G.O.N.E-main-052022/G.O.N.E-main/right-arrow.png')
 
     #create list of numbers and placement
     for i in range(amt+1):
@@ -244,7 +511,7 @@ def game(amt, user_max):
     while 1:
         # mx, my = pygame.mouse.get_pos()
         for i in range(amt - 1):
-            pygame.draw.rect(screen, (255, 0, 0), stickrect_list[i])
+            pygame.draw.rect(SCREEN, (255, 0, 0), stickrect_list[i])
         for event in pygame.event.get():
             if event.type == pygame.QUIT: sys.exit()
             if event.type == pygame.MOUSEBUTTONUP:
@@ -252,7 +519,7 @@ def game(amt, user_max):
                 print(mx, my)
                 if stickrect.collidepoint((mx, my)):
                     print('y')
-                    # screen.blit(stickrect, (0,0,0))
+                    # SCREEN.blit(stickrect, (0,0,0))
                     stick.fill((0, 0, 0, 0))
                     # if click:
                     #     print('yes')
@@ -263,14 +530,14 @@ def game(amt, user_max):
         # if stickrect.top < 0 or stickrect.bottom > height:
         #     speed[1] = -speed[1]
 
-        screen.fill(black)
+        SCREEN.fill(black)
         for i in range(amt):
             for j in range(len(stickrect_list)):
-                screen.blit(stick_list[j], stickrect_list[j])
-        #display numbers on screen beside sticks
+                SCREEN.blit(stick_list[j], stickrect_list[j])
+        #display numbers on SCREEN beside sticks
         for i in range(amt):
             for j in range(len(numberrect_list)):
-                screen.blit(number_list[j], numberrect_list[j])
+                SCREEN.blit(number_list[j], numberrect_list[j])
 
 
         pygame.display.flip()
