@@ -1,4 +1,5 @@
 # G.O.N.E
+## Artificial Intelligence Final Project
 ## Created by:
  * Kim Eaton 
  * Christopher McDonnell
